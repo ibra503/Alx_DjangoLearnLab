@@ -1,11 +1,14 @@
 from django.urls import path
 from . import views
-from .views import LibraryDetailView
+
+# Define the app namespace (optional but recommended)
+app_name = 'relationship_app'
 
 urlpatterns = [
-    path('list_books/', views.list_books, name='list_books'),
-    path('library_list/', views.library_list, name='library_list'),
-
-    # Class-based view
-    path('library/<int:pk>/', LibraryDetailView.as_view(), name='library_detail'),
+    # Function-based view URL pattern
+    path('books/', views.list_books, name='list_books'),
+    
+    # Class-based view URL pattern
+    # <int:pk> captures the library ID from the URL
+    path('library/<int:pk>/', views.LibraryDetailView.as_view(), name='library_detail'),
 ]

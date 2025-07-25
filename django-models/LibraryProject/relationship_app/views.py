@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.views.generic import DetailView
-from .models import Book, Library  # Make sure this line is included!
+from .models import Book, Library  # Ensure this line is included!
 
 # Function-based view to list all books
 def list_books(request):
@@ -20,3 +20,12 @@ class LibraryDetailView(DetailView):
     model = Library
     template_name = 'relationship_app/library_detail.html'
     context_object_name = 'library'
+
+    def get_context_data(self, **kwargs):
+        """
+        Override the get_context_data method to add the list of books
+        available in the library to the context.
+        """
+        context = super().get_context_data(**kwargs)
+        context['books'] = self.object.book_set.all()  # Assuming a reverse relationship from Library to Book
+        return context

@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from django.views.generic import DetailView
 from django.contrib.auth.models import User
-from .models import Author, Book, Library  # Added Library here!
+from .models import Author, Book
+from .models import Library
 
 # Function-based view to list all books
 def list_books(request):

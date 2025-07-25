@@ -1,98 +1,17 @@
-<!-- relationship_app/templates/relationship_app/library_detail.html -->
+<!-- library_detail.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ library.name }} - Library Details</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 40px;
-            background-color: #f4f4f4;
-        }
-        .library-header {
-            background-color: #007bff;
-            color: white;
-            padding: 20px;
-            border-radius: 8px 8px 0 0;
-            margin-bottom: 0;
-        }
-        .library-content {
-            background-color: white;
-            padding: 20px;
-            border-radius: 0 0 8px 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        h1 {
-            margin: 0;
-        }
-        h2 {
-            color: #333;
-            border-bottom: 1px solid #ddd;
-            padding-bottom: 10px;
-        }
-        ul {
-            list-style-type: none;
-            padding: 0;
-        }
-        li {
-            margin-bottom: 12px;
-            padding: 12px;
-            background-color: #f8f9fa;
-            border-left: 4px solid #28a745;
-            border-radius: 4px;
-        }
-        .book-title {
-            font-weight: bold;
-            color: #333;
-        }
-        .book-author {
-            color: #666;
-        }
-        .book-year {
-            color: #888;
-            font-style: italic;
-        }
-        .no-books {
-            color: #999;
-            font-style: italic;
-            text-align: center;
-            padding: 20px;
-            background-color: #f8f9fa;
-            border-radius: 4px;
-        }
-    </style>
+    <title>Library Detail</title>
 </head>
 <body>
-    <div class="library-header">
-        <h1>{{ library.name }}</h1>
-    </div>
-    
-    <div class="library-content">
-        {% if library.books.all %}
-            <h2>Books Available in This Library ({{ library.books.count }})</h2>
-            <ul>
-                {% for book in library.books.all %}
-                    <li>
-                        <div class="book-title">{{ book.title }}</div>
-                        <div class="book-author">by {{ book.author.name }}</div>
-                        {% if book.publication_year %}
-                            <div class="book-year">Published in {{ book.publication_year }}</div>
-                        {% endif %}
-                    </li>
-                {% endfor %}
-            </ul>
-        {% else %}
-            <h2>Books in Library:</h2>
-            <div class="no-books">
-                No books are currently available in this library.
-            </div>
-        {% endif %}
-    </div>
-    
-    <br>
-    <a href="/books/">← View All Books</a> | 
-    <a href="/">← Back to Home</a>
+    <h1>Library: {{ library.name }}</h1>
+    <h2>Books in Library:</h2>
+    <ul>
+        {% for book in library.books.all %}
+        <li>{{ book.title }} by {{ book.author.name }} (Published {{ book.publication_year }})</li>
+        {% endfor %}
+    </ul>
 </body>
 </html>

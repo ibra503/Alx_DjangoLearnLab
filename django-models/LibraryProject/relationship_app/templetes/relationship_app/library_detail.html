@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ library.name }}</title>
+</head>
+<body>
+    <h1>{{ library.name }} - {{ library.location }}</h1>
+
+    <h2>Books in this Library:</h2>
+    <ul>
+        {% for book in books %}
+            <li>{{ book.title }} by {{ book.author.name }}</li>
+        {% empty %}
+            <li>No books in this library.</li>
+        {% endfor %}
+    </ul>
+
+    <a href="{% url 'library_list' %}">← Back to all libraries</a>
+</body>
+</html>

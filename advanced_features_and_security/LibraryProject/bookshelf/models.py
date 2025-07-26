@@ -26,3 +26,4 @@ class CustomUserAdmin(UserAdmin):
     )
 admin.site.register(CustomUser, CustomUserAdmin)
 class CustomUserManager(BaseUserManager):", "create_user", "create_superuser
+can_create , can_delete

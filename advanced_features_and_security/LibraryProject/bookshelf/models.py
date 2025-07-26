@@ -25,3 +25,4 @@ class CustomUserAdmin(UserAdmin):
 (None, {'fields': ('date_of_birth', 'profile_photo')}),
     )
 admin.site.register(CustomUser, CustomUserAdmin)
+class CustomUserManager(BaseUserManager):", "create_user", "create_superuser

@@ -3,6 +3,15 @@ from django.views.generic.detail import DetailView
 from django.contrib.auth.models import User
 from .models import Author, Book
 from .models import Library
+from django.contrib.auth.forms import UserCreationForm
+from django.urls import reverse_lazy
+from django.views.generic import CreateView
+
+
+class SignUpView(CreateView):
+    form_class = UserCreationForm
+    success_url = reverse_lazy('login')
+    template_name = 'register/register.html'
 
 # Function-based view to list all books
 def list_books(request):
@@ -26,5 +35,6 @@ class LibraryDetailView(DetailView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # Additional context can be added here if needed
         return context
+    
+    

@@ -1,5 +1,10 @@
 from django.db import models
+from django.contrib.auth.models import User
 
+
+user = User.objects.create_user('john', 'john@example.com', 'password123')
+
+user = User.objects.get(username='john')
 class Author(models.Model):
     name = models.CharField(max_length=100)
 

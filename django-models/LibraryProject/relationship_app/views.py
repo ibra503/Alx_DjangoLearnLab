@@ -123,12 +123,12 @@ def delete_book(request, book_id):
     # Logic for deleting a book
     pass
 from django.contrib.auth.mixins import PermissionRequiredMixin
-    from django.views import View
+from django.views import View
     class BookCreateView(PermissionRequiredMixin, View):
-        permission_required = 'relationship_app.can_add_book
-        from django.contrib.auth.decorators import permission_required
-        relationship_app.can_change_book relationship_app.can_delete_book
-        Checks for An ‘Admin’ view that only users with the ‘Admin’ role can access. task
+    permission_required = 'relationship_app.can_add_book
+from django.contrib.auth.decorators import permission_required
+    relationship_app.can_change_book relationship_app.can_delete_book
+    Checks for An ‘Admin’ view that only users with the ‘Admin’ role can access. task
 
 user_passes_test(lambda u: u.userprofile.role == 'Librarian')
     def librarian_view(request):

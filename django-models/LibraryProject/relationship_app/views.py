@@ -107,9 +107,6 @@ class LibraryDetailView(DetailView):
     model = Library
     template_name = 'library_detail.html'
     context_object_name = 'library'
-from django.contrib.auth.decorators import permission_required
-from django.shortcuts import render, redirect
-from .models import Book 
 
 @permission_required('your_app_name.can_add_book')
 def add_book(request):
@@ -125,3 +122,7 @@ def edit_book(request, book_id):
 def delete_book(request, book_id):
     # Logic for deleting a book
     pass
+from django.contrib.auth.mixins import PermissionRequiredMixin
+    from django.views import View
+    class BookCreateView(PermissionRequiredMixin, View):
+        permission_required = 'relationship_app.can_add_book'

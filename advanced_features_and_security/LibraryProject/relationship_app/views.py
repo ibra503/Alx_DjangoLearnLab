@@ -136,7 +136,7 @@ user_passes_test(lambda u: u.userprofile.role == 'Librarian')
     @user_passes_test(lambda u: u.userprofile.role == 'Member')
     def member_view(request):
     return render(request, 'member_view.html')
-    
+    # views.py
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.shortcuts import render
 from .models import UserProfile

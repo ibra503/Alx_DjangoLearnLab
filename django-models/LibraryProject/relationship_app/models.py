@@ -63,3 +63,10 @@ def create_user_profile(sender, instance, created, **kwargs):
 @receiver(post_save, sender=User)
 def save_user_profile(sender, instance, **kwargs):
     instance.userprofile.save()
+    class LibraryBooksView(ListView):
+    model = Book
+    template_name = 'library/list_books.html'  # Update with your actual template path
+    context_object_name = 'books'
+    def get_queryset(self):
+        # Customize this method if you need specific filtering
+        return Book.objects.all()

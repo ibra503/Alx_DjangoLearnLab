@@ -33,6 +33,9 @@ class Book(models.Model):
 
 
 
+
+
+
 class UserProfile(models.Model):
     ROLE_CHOICES = [
         ('Admin', 'Admin'),
@@ -41,10 +44,7 @@ class UserProfile(models.Model):
     ]
     
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='Member')
-
-    def __str__(self):
-        return f"{self.user.username} - {self.role}"
+    role = models.CharField(max_length=10, choices=ROLE_CHOICES, default='Member')
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):

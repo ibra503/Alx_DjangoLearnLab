@@ -57,30 +57,44 @@ from .models import UserProfile
 
 #############################################################################
 
-def is_admin(user):
-    if user.is_authenticated and hasattr(user, 'userprofile'):
-        return user.userprofile.role == 'Admin'
-    return False
 
-def is_librarian(user):
-    if user.is_authenticated and hasattr(user, 'userprofile'):
-        return user.userprofile.role == 'Librarian'
-    return False
 
-def is_member(user):
-    if user.is_authenticated and hasattr(user, 'userprofile'):
-        return user.userprofile.role == 'Member'
-    return False
+from django.shortcuts import render
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.core.exceptions import PermissionDenied
 
-# Role-based views
-@user_passes_test(is_admin)
+def check_role(user, required_role):
+    try:
+        return user.userprofile.role == required_role
+    except:
+        return False
+
+def admin_check(user):
+    if not check_role(user, 'Admin'):
+        raise PermissionDenied
+    return True
+
+def librarian_check(user):
+    if not check_role(user, 'Librarian'):
+        raise PermissionDenied
+    return True
+
+def member_check(user):
+    if not check_role(user, 'Member'):
+        raise PermissionDenied
+    return True
+
+@login_required
+@user_passes_test(admin_check)
 def admin_view(request):
-    return render(request, 'relationship_app/admin_view.html')
+    return render(request, 'admin_view.html')
 
-@user_passes_test(is_librarian)
+@login_required
+@user_passes_test(librarian_check)
 def librarian_view(request):
-    return render(request, 'relationship_app/librarian_view.html')
+    return render(request, 'librarian_view.html')
 
-@user_passes_test(is_member)
+@login_required
+@user_passes_test(member_check)
 def member_view(request):
-    return render(request, 'relationship_app/member_view.html')
+    return render(request, 'member_view.html')

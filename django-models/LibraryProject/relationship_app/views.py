@@ -59,7 +59,8 @@ from .models import UserProfile
 
 
 
-from django.shortcuts import render, redirect
+# relationship_app/views.py
+from django.shortcuts import render
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.exceptions import PermissionDenied
 
@@ -67,47 +68,34 @@ def check_role(user, required_role):
     """Check if user has the required role"""
     if user.is_authenticated:
         try:
+            # Access profile through the related name
             return user.profile.role == required_role
-        except UserProfile.DoesNotExist:
+        except AttributeError:
             # Handle case where profile doesn't exist
             return False
     return False
 
-def admin_required(view_func):
-    """Decorator to ensure user has Admin role"""
-    def wrapper(request, *args, **kwargs):
-        if not check_role(request.user, 'Admin'):
-            raise PermissionDenied
-        return view_func(request, *args, **kwargs)
-    return wrapper
+# Define test functions for each role
+def admin_test(user):
+    return check_role(user, 'Admin')
 
-def librarian_required(view_func):
-    """Decorator to ensure user has Librarian role"""
-    def wrapper(request, *args, **kwargs):
-        if not check_role(request.user, 'Librarian'):
-            raise PermissionDenied
-        return view_func(request, *args, **kwargs)
-    return wrapper
+def librarian_test(user):
+    return check_role(user, 'Librarian')
 
-def member_required(view_func):
-    """Decorator to ensure user has Member role"""
-    def wrapper(request, *args, **kwargs):
-        if not check_role(request.user, 'Member'):
-            raise PermissionDenied
-        return view_func(request, *args, **kwargs)
-    return wrapper
+def member_test(user):
+    return check_role(user, 'Member')
 
 @login_required
-@admin_required
+@user_passes_test(admin_test)
 def admin_view(request):
-    return render(request, 'admin_view.html')
+    return render(request, 'relationship_app/admin_view.html')
 
 @login_required
-@librarian_required
+@user_passes_test(librarian_test)
 def librarian_view(request):
-    return render(request, 'librarian_view.html')
+    return render(request, 'relationship_app/librarian_view.html')
 
 @login_required
-@member_required
+@user_passes_test(member_test)
 def member_view(request):
-    return render(request, 'member_view.html')
+    return render(request, 'relationship_app/member_view.html')

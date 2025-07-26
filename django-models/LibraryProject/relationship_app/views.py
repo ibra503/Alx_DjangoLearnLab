@@ -11,7 +11,7 @@ from django.contrib.auth import login
 class SignUpView(CreateView):
     form_class = UserCreationForm
     success_url = reverse_lazy('login')
-    template_name = 'register/register.html'
+    template_name = 'relationship_app/register.html'
 
 # Function-based view to list all books
 def list_books(request):

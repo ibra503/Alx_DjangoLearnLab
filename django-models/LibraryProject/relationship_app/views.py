@@ -63,104 +63,32 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.exceptions import PermissionDenied
 
-def check_role(user, required_role):
-    try:
-        return user.userprofile.role == required_role
-    except:
+def check_admin(user):
+    if not user.is_authenticated:
         return False
+    return hasattr(user, 'profile') and user.profile.role == 'Admin'
 
-def admin_check(user):
-    if not check_role(user, 'Admin'):
-        raise PermissionDenied
-    return True
+def check_librarian(user):
+    if not user.is_authenticated:
+        return False
+    return hasattr(user, 'profile') and user.profile.role == 'Librarian'
 
-def librarian_check(user):
-    if not check_role(user, 'Librarian'):
-        raise PermissionDenied
-    return True
-
-def member_check(user):
-    if not check_role(user, 'Member'):
-        raise PermissionDenied
-    return True
+def check_member(user):
+    if not user.is_authenticated:
+        return False
+    return hasattr(user, 'profile') and user.profile.role == 'Member'
 
 @login_required
-@user_passes_test(admin_check)
+@user_passes_test(check_admin)
 def admin_view(request):
     return render(request, 'admin_view.html')
 
 @login_required
-@user_passes_test(librarian_check)
+@user_passes_test(check_librarian)
 def librarian_view(request):
     return render(request, 'librarian_view.html')
 
 @login_required
-@user_passes_test(member_check)
-def member_view(request):
-    return render(request, 'member_view.html')
-
-
-def list_books(request):
-    books = Book.objects.all()
-    return render(request, 'list_books.html', {'books': books})
-class LibraryDetailView(DetailView):
-    model = Library
-    template_name = 'library_detail.html'
-    context_object_name = 'library'
-
-@permission_required('your_app_name.can_add_book')
-def add_book(request):
-    # Logic for adding a book
-    pass
-
-@permission_required('your_app_name.can_change_book')
-def edit_book(request, book_id):
-    # Logic for editing a book
-    pass
-
-@permission_required('your_app_name.can_delete_book')
-def delete_book(request, book_id):
-    # Logic for deleting a book
-    pass
-from django.contrib.auth.mixins import PermissionRequiredMixin
-from django.views import View
-    class BookCreateView(PermissionRequiredMixin, View):
-    permission_required = 'relationship_app.can_add_book
-from django.contrib.auth.decorators import permission_required
-    relationship_app.can_change_book relationship_app.can_delete_book
-    Checks for An ‘Admin’ view that only users with the ‘Admin’ role can access. task
-
-user_passes_test(lambda u: u.userprofile.role == 'Librarian')
-    def librarian_view(request):
-    return render(request, 'librarian_view.html')
-    @user_passes_test(lambda u: u.userprofile.role == 'Member')
-    def member_view(request):
-    return render(request, 'member_view.html')
-    
-from django.contrib.auth.decorators import login_required, user_passes_test
-from django.shortcuts import render
-from .models import UserProfile
-
-def is_admin(user):
-    return hasattr(user, 'userprofile') and user.userprofile.role == 'Admin'
-
-def is_librarian(user):
-    return hasattr(user, 'userprofile') and user.userprofile.role == 'Librarian'
-
-def is_member(user):
-    return hasattr(user, 'userprofile') and user.userprofile.role == 'Member'
-
-@login_required
-@user_passes_test(is_admin)
-def admin_view(request):
-    return render(request, 'admin_view.html')
-
-@login_required
-@user_passes_test(is_librarian)
-def librarian_view(request):
-    return render(request, 'librarian_view.html')
-
-@login_required
-@user_passes_test(is_member)
+@user_passes_test(check_member)
 def member_view(request):
     return render(request, 'member_view.html')

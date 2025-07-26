@@ -45,12 +45,6 @@ class Meta:
         ("can_delete_book", "Can delete a book"),
             ]
 
-class UserProfile(models.Model):
-    ROLE_CHOICES = [
-        ('Admin', 'Admin'),
-        ('Librarian', 'Librarian'),
-        ('Member', 'Member'),
-    ]
     
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     role = models.CharField(max_length=10, choices=ROLE_CHOICES, default='Member')
@@ -68,11 +62,16 @@ def save_user_profile(sender, instance, **kwargs):
     template_name = 'library/list_books.html'  # Update with your actual template path
     context_object_name = 'books'
     def get_queryset(self):
-        # Customize this method if you need specific filtering
         return Book.objects.all()
-    # models.py
+
+
+
+    def __str__(self):
+        return f"{self.user.username} - {self.role}"
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 class UserProfile(models.Model):
     ROLE_CHOICES = [
@@ -80,8 +79,12 @@ class UserProfile(models.Model):
         ('Librarian', 'Librarian'),
         ('Member', 'Member'),
     ]
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    role = models.CharField(max_length=20, choices=ROLE_CHOICES)
+    
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
+    role = models.CharField(max_length=10, choices=ROLE_CHOICES, default='Member')
 
-    def __str__(self):
-        return f"{self.user.username} - {self.role}"
+@receiver(post_save, sender=User)
+def create_or_update_user_profile(sender, instance, created, **kwargs):
+    if created:
+        UserProfile.objects.create(user=instance)
+    instance.profile.save()

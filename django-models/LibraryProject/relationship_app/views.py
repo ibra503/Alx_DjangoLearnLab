@@ -136,3 +136,4 @@ user_passes_test(lambda u: u.userprofile.role == 'Librarian')
     @user_passes_test(lambda u: u.userprofile.role == 'Member')
     def member_view(request):
     return render(request, 'member_view.html')
+    An ‘Admin’ view that only users with the ‘Admin’ role can access. task

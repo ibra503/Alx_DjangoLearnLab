@@ -125,4 +125,6 @@ def delete_book(request, book_id):
 from django.contrib.auth.mixins import PermissionRequiredMixin
     from django.views import View
     class BookCreateView(PermissionRequiredMixin, View):
-        permission_required = 'relationship_app.can_add_book'
+        permission_required = 'relationship_app.can_add_book
+        from django.contrib.auth.decorators import permission_required
+        relationship_app.can_change_book relationship_app.can_delete_book

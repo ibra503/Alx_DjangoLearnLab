@@ -59,36 +59,55 @@ from .models import UserProfile
 
 
 
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.exceptions import PermissionDenied
 
-def check_admin(user):
-    if not user.is_authenticated:
-        return False
-    return hasattr(user, 'profile') and user.profile.role == 'Admin'
+def check_role(user, required_role):
+    """Check if user has the required role"""
+    if user.is_authenticated:
+        try:
+            return user.profile.role == required_role
+        except UserProfile.DoesNotExist:
+            # Handle case where profile doesn't exist
+            return False
+    return False
 
-def check_librarian(user):
-    if not user.is_authenticated:
-        return False
-    return hasattr(user, 'profile') and user.profile.role == 'Librarian'
+def admin_required(view_func):
+    """Decorator to ensure user has Admin role"""
+    def wrapper(request, *args, **kwargs):
+        if not check_role(request.user, 'Admin'):
+            raise PermissionDenied
+        return view_func(request, *args, **kwargs)
+    return wrapper
 
-def check_member(user):
-    if not user.is_authenticated:
-        return False
-    return hasattr(user, 'profile') and user.profile.role == 'Member'
+def librarian_required(view_func):
+    """Decorator to ensure user has Librarian role"""
+    def wrapper(request, *args, **kwargs):
+        if not check_role(request.user, 'Librarian'):
+            raise PermissionDenied
+        return view_func(request, *args, **kwargs)
+    return wrapper
+
+def member_required(view_func):
+    """Decorator to ensure user has Member role"""
+    def wrapper(request, *args, **kwargs):
+        if not check_role(request.user, 'Member'):
+            raise PermissionDenied
+        return view_func(request, *args, **kwargs)
+    return wrapper
 
 @login_required
-@user_passes_test(check_admin)
+@admin_required
 def admin_view(request):
     return render(request, 'admin_view.html')
 
 @login_required
-@user_passes_test(check_librarian)
+@librarian_required
 def librarian_view(request):
     return render(request, 'librarian_view.html')
 
 @login_required
-@user_passes_test(check_member)
+@member_required
 def member_view(request):
     return render(request, 'member_view.html')

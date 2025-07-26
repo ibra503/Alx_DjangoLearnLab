@@ -98,3 +98,30 @@ def librarian_view(request):
 @user_passes_test(member_check)
 def member_view(request):
     return render(request, 'member_view.html')
+
+
+def list_books(request):
+    books = Book.objects.all()
+    return render(request, 'list_books.html', {'books': books})
+class LibraryDetailView(DetailView):
+    model = Library
+    template_name = 'library_detail.html'
+    context_object_name = 'library'
+from django.contrib.auth.decorators import permission_required
+from django.shortcuts import render, redirect
+from .models import Book 
+
+@permission_required('your_app_name.can_add_book')
+def add_book(request):
+    # Logic for adding a book
+    pass
+
+@permission_required('your_app_name.can_change_book')
+def edit_book(request, book_id):
+    # Logic for editing a book
+    pass
+
+@permission_required('your_app_name.can_delete_book')
+def delete_book(request, book_id):
+    # Logic for deleting a book
+    pass

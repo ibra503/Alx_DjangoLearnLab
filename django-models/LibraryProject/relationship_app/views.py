@@ -9,6 +9,7 @@ from django.views.generic import CreateView
 from django.contrib.auth import login
 from django.contrib.auth.decorators import user_passes_test
 from django.shortcuts import render
+from .models import UserProfile
 class SignUpView(CreateView):
     form_class = UserCreationForm
     success_url = reverse_lazy('login')
@@ -48,10 +49,14 @@ class LibraryDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         return context
     
-from django.contrib.auth.decorators import user_passes_test
+    from django.contrib.auth.decorators import user_passes_test
 from .models import UserProfile
 
 # Role checking functions
+
+
+#############################################################################
+
 def is_admin(user):
     if user.is_authenticated and hasattr(user, 'userprofile'):
         return user.userprofile.role == 'Admin'

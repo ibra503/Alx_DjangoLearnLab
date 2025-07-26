@@ -106,3 +106,5 @@ class CustomUserManager(BaseUserManager):
         extra_fields.setdefault('is_superuser', True)
 
         return self.create_user(username, email, password, **extra_fields)
+    
+    class CustomUser(AbstractUser):", "date_of_birth", "profile_photo"]

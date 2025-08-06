@@ -40,4 +40,4 @@ def get_queryset(self):
 def perform_update(self, serializer):
     """Custom update logic with validation"""
     instance = self.get_object()
-    serializer.save()
+    serializer.save()CreateView", "UpdateView", "DeleteView

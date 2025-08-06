@@ -43,4 +43,5 @@ def perform_update(self, serializer):
     instance = self.get_object()
     serializer.save()CreateView", "UpdateView", "DeleteView
     filters.OrderingFilter
+    title, author
     filters.SearchFilter

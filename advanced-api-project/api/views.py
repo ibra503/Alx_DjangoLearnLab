@@ -45,3 +45,18 @@ def perform_update(self, serializer):
     filters.OrderingFilter
     title, author
     filters.SearchFilter
+    # Add this to BookListView for filtering support
+from django_filters.rest_framework import DjangoFilterBackend
+
+class BookListView(generics.ListCreateAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['publication_year']
+    pagination_class = PageNumberPagination  # Enable pagination for testing
+
+class AuthorDetailView(generics.RetrieveAPIView):
+    """View for author details with nested books"""
+    queryset = Author.objects.all()
+    serializer_class = AuthorSerializer

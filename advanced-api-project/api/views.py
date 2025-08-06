@@ -42,3 +42,4 @@ def perform_update(self, serializer):
     """Custom update logic with validation"""
     instance = self.get_object()
     serializer.save()CreateView", "UpdateView", "DeleteView
+    filters.OrderingFilter

@@ -13,3 +13,5 @@ class BookAPITests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         # This line checks for 'response.data'
         self.assertIsNotNone(response.data)
+        
+self.client.login

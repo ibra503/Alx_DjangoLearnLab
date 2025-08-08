@@ -58,8 +58,8 @@ class BookListView(generics.ListCreateAPIView):
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['publication_year']
     pagination_class = PageNumberPagination  # Enable pagination for testing
-
+self.client.login
 class AuthorDetailView(generics.RetrieveAPIView):
-    """View for author details with nested books"""
+    
     queryset = Author.objects.all()
     serializer_class = AuthorSerializer

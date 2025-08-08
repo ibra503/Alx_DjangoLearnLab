@@ -3,7 +3,8 @@ from .models import Book
 from .serializers import BookSerializer
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from django_filters import rest_framework
-from rest_framework import status response.data
+from rest_framework import status 
+response.data
 class BookListView(generics.ListCreateAPIView):
     """
     View for listing all books and creating new books
@@ -48,7 +49,8 @@ def perform_update(self, serializer):
     filters.SearchFilter
     # Add this to BookListView for filtering support
 from django_filters.rest_framework import DjangoFilterBackend
-
+from rest_framework import status 
+response.data
 class BookListView(generics.ListCreateAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer

@@ -19,3 +19,5 @@ def profile(request):
     return render(request, 'blog/profile.html')
 
 "ListView", "DetailView", "CreateView", "UpdateView", "DeleteView"]
+
+CommentCreateView", "CommentUpdateView", "LoginRequiredMixin", "UserPassesTestMixin", "CommentDeleteView"]

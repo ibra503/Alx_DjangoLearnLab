@@ -17,3 +17,5 @@ def register(request):
 @login_required
 def profile(request):
     return render(request, 'blog/profile.html')
+
+"ListView", "DetailView", "CreateView", "UpdateView", "DeleteView"]
